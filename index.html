@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Exam Countdown - Abhigyan Singh 🔥</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(45deg, #ff0080, #ffcc00, #ff5733);
+            color: white;
+            animation: bgAnimation 5s infinite alternate;
+        }
+
+        @keyframes bgAnimation {
+            0% { background-position: left; }
+            100% { background-position: right; }
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-shadow: 3px 3px 5px black;
+        }
+
+        #countdown {
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 10px;
+            text-shadow: 3px 3px 5px black;
+        }
+
+        #gifContainer img {
+            width: 250px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        #dateLabel {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 20px;
+            display: block;
+        }
+
+        input[type="date"] {
+            font-size: 1.5rem;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            text-align: center;
+            box-shadow: 3px 3px 5px black;
+        }
+
+        #hint {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        footer {
+            font-size: 1.2rem;
+            margin-top: 30px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔥 Exam Countdown - <b>for boards</b> 🔥</h1>
+    
+    <div id="gifContainer">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjN3amNjcW5iMWozN3FxZHhsc3pqbzJ2dnAzcTdzM21ubDV5eHVmNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1hXY6iNdTFpTW4je85/giphy.gif">
+    </div>
+
+    <label id="dateLabel">📅 Select Your Exam Date:</label>
+    <input type="date" id="examDate" onchange="startCountdown()">
+    
+    <p id="hint">🤔 Don't know the date? Try this: <b>17/02/2026</b></p>
+
+    <p id="countdown">Waiting for date...</p>
+
+    <audio id="whatHellNah" src="https://www.myinstants.com/media/sounds/what-aw-hell-nah.mp3"></audio>
+
+    <script>
+        let countdownInterval;
+
+        function playSound(id, delay) {
+            setTimeout(() => {
+                let sound = document.getElementById(id);
+                if (sound) {
+                    sound.play().catch(error => console.log("Playback error: ", error));
+                }
+            }, delay);
+        }
+
+        function startCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            let examDateInput = document.getElementById('examDate').value;
+            if (!examDateInput) {
+                document.getElementById("countdown").innerText = "Select a valid date!";
+                return;
+            }
+
+            let examDate = new Date(examDateInput).getTime();
+            playSound("whatHellNah", 1000); // Play sound after 1 second
+
+            countdownInterval = setInterval(() => {
+                let now = new Date().getTime();
+                let timeDiff = examDate - now;
+
+                if (timeDiff <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown").innerText = "Time's Up!";
+                    return;
+                }
+
+                let days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerText = `${days} Days ${hours}h ${minutes}m ${seconds}s Left`;
+            }, 1000);
+        }
+    </script>
+
+    <footer>Made with ❤️ by Abhigyan Singh</footer>
+
+</body>
+</html>
